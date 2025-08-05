@@ -1,0 +1,114 @@
+---
+// Footer.astro
+---
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>Agendar Cita</h3>
+      <p>Sistema de agendamiento de citas de barbería</p>
+    </div>
+    
+    <div class="footer-section">
+      <h4>Contacto</h4>
+      <p>📧 info@agendarcita.com</p>
+      <p>📞 +1 (555) 123-4567</p>
+      <p>📍 Calle Principal 123, Ciudad</p>
+    </div>
+    
+    <div class="footer-section">
+      <h4>Horarios</h4>
+      <p>Lunes - Viernes: 8:00 AM - 6:00 PM</p>
+      <p>Sábados: 9:00 AM - 2:00 PM</p>
+      <p>Domingos: Cerrado</p>
+    </div>
+    
+    <div class="footer-section">
+      <h4>Síguenos</h4>
+      <div class="social-links">
+        <a href="#" aria-label="Facebook">📘</a>
+        <a href="#" aria-label="Twitter">🐦</a>
+        <a href="#" aria-label="Instagram">📷</a>
+        <a href="#" aria-label="LinkedIn">💼</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer-bottom">
+    <p>&copy; 2024 Agendar Cita. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: #2c3e50;
+    color: white;
+    padding: 3rem 0 1rem;
+    margin-top: 4rem;
+  }
+  
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+  
+  .footer-section h3 {
+    color: #3498db;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+  
+  .footer-section h4 {
+    color: #3498db;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+  }
+  
+  .footer-section p {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+  
+  .social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .social-links a {
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: transform 0.3s;
+  }
+  
+  .social-links a:hover {
+    transform: scale(1.2);
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #34495e;
+  }
+  
+  .footer-bottom p {
+    margin: 0;
+    color: #bdc3c7;
+  }
+  
+  @media (max-width: 768px) {
+    .footer-content {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    
+    .social-links {
+      justify-content: center;
+    }
+  }
+</style> 

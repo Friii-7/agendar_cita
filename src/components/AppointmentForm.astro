@@ -1,0 +1,269 @@
+---
+// AppointmentForm.astro
+---
+
+<div class="appointment-form">
+  <h2>Agendar Cita de Barbería</h2>
+  <form id="appointmentForm">
+    <div class="form-group">
+      <label for="name">Nombre completo</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="phone">Teléfono</label>
+      <input type="tel" id="phone" name="phone" required>
+    </div>
+    
+    <div class="form-group">
+      <label for="barber">Barbero</label>
+      <select id="barber" name="barber" required>
+        <option value="">Selecciona un barbero</option>
+        <option value="araz">Araz</option>
+        <option value="danel">Danel</option>
+        <option value="farzin">Farzin</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="service">Servicio</label>
+      <select id="service" name="service" required>
+        <option value="">Selecciona un servicio</option>
+        <option value="corte" data-price="25">Corte Clásico - $25</option>
+        <option value="barba" data-price="20">Arreglo de Barba - $20</option>
+        <option value="combo" data-price="35">Corte + Barba - $35</option>
+        <option value="disenos" data-price="40">Diseños y Degradados - $40</option>
+        <option value="tratamiento" data-price="30">Tratamiento Capilar - $30</option>
+        <option value="especializado" data-price="50">Servicios Especializados - $50</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="date">Fecha</label>
+      <input type="date" id="date" name="date" required min="">
+    </div>
+    
+    <div class="form-group">
+      <label for="time">Hora</label>
+      <select id="time" name="time" required>
+        <option value="">Selecciona una hora</option>
+        <option value="09:00">9:00 AM</option>
+        <option value="10:00">10:00 AM</option>
+        <option value="11:00">11:00 AM</option>
+        <option value="12:00">12:00 PM</option>
+        <option value="13:00">1:00 PM</option>
+        <option value="14:00">2:00 PM</option>
+        <option value="15:00">3:00 PM</option>
+        <option value="16:00">4:00 PM</option>
+        <option value="17:00">5:00 PM</option>
+        <option value="18:00">6:00 PM</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="notes">Notas adicionales</label>
+      <textarea id="notes" name="notes" rows="4" placeholder="Especificaciones especiales, preferencias de estilo, etc."></textarea>
+    </div>
+    
+    <div class="total-section">
+      <h3>Total: <span id="total">$0</span></h3>
+    </div>
+    
+    <button type="submit" class="submit-btn">Agendar Cita</button>
+  </form>
+</div>
+
+<style>
+  .appointment-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .appointment-form h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #555;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e1e8ed;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  }
+  
+  .total-section {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .total-section h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.5rem;
+  }
+  
+  #total {
+    color: #3498db;
+    font-weight: 700;
+  }
+  
+  .submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .submit-btn:hover {
+    background: linear-gradient(135deg, #2980b9, #1f5f8b);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+  }
+  
+  .submit-btn:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  .success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    text-align: center;
+  }
+  
+  .error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    text-align: center;
+  }
+</style>
+
+<script>
+  import { saveAppointment } from '../lib/firebase.js';
+  
+  // Establecer fecha mínima como hoy
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('date').min = today;
+  
+  // Calcular total cuando se selecciona un servicio
+  document.getElementById('service').addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    const price = selectedOption.dataset.price || 0;
+    document.getElementById('total').textContent = `$${price}`;
+  });
+  
+  // Manejar envío del formulario
+  document.getElementById('appointmentForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const submitBtn = e.target.querySelector('.submit-btn');
+    const originalText = submitBtn.textContent;
+    
+    // Deshabilitar botón y mostrar loading
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Agendando...';
+    
+    // Remover mensajes anteriores
+    const existingMessages = document.querySelectorAll('.success-message, .error-message');
+    existingMessages.forEach(msg => msg.remove());
+    
+    try {
+      const formData = new FormData(e.target);
+      const appointmentData = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        barber: formData.get('barber'),
+        service: formData.get('service'),
+        date: formData.get('date'),
+        time: formData.get('time'),
+        notes: formData.get('notes'),
+        total: document.getElementById('total').textContent
+      };
+      
+      // Guardar en Firebase
+      const result = await saveAppointment(appointmentData);
+      
+      if (result.success) {
+        // Mostrar mensaje de éxito
+        const successMsg = document.createElement('div');
+        successMsg.className = 'success-message';
+        successMsg.innerHTML = `
+          <h3>✅ ¡Cita agendada exitosamente!</h3>
+          <p>Tu cita ha sido confirmada. Te enviaremos un correo de confirmación.</p>
+          <p><strong>ID de cita:</strong> ${result.id}</p>
+        `;
+        e.target.appendChild(successMsg);
+        
+        // Limpiar formulario
+        e.target.reset();
+        document.getElementById('total').textContent = '$0';
+      }
+    } catch (error) {
+      console.error('Error scheduling appointment:', error);
+      
+      // Mostrar mensaje de error
+      const errorMsg = document.createElement('div');
+      errorMsg.className = 'error-message';
+      errorMsg.innerHTML = `
+        <h3>❌ Error al agendar la cita</h3>
+        <p>Por favor intenta de nuevo. Si el problema persiste, contáctanos.</p>
+      `;
+      e.target.appendChild(errorMsg);
+    } finally {
+      // Restaurar botón
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    }
+  });
+</script> 

@@ -1,0 +1,262 @@
+---
+// Services.astro
+---
+
+<section id="servicios" class="services">
+  <div class="services-container">
+    <div class="services-header">
+      <h2>Nuestros Servicios</h2>
+      <p>Ofrecemos una amplia gama de servicios de barbería para cuidar de tu estilo</p>
+    </div>
+    
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">✂️</div>
+        <h3>Corte Clásico</h3>
+        <p>Corte de cabello tradicional con técnicas clásicas de barbería.</p>
+        <ul>
+          <li>Lavado y acondicionado</li>
+          <li>Corte personalizado</li>
+          <li>Acabado profesional</li>
+        </ul>
+        <div class="service-price">$25</div>
+      </div>
+      
+      <div class="service-card">
+        <div class="service-icon">🧔</div>
+        <h3>Arreglo de Barba</h3>
+        <p>Arreglo y modelado de barba con técnicas profesionales.</p>
+        <ul>
+          <li>Delineado de barba</li>
+          <li>Recorte y modelado</li>
+          <li>Aceite para barba</li>
+        </ul>
+        <div class="service-price">$20</div>
+      </div>
+      
+      <div class="service-card">
+        <div class="service-icon">💈</div>
+        <h3>Corte + Barba</h3>
+        <p>Combo completo de corte de cabello y arreglo de barba.</p>
+        <ul>
+          <li>Corte clásico</li>
+          <li>Arreglo de barba</li>
+          <li>Tratamiento completo</li>
+        </ul>
+        <div class="service-price">$35</div>
+      </div>
+      
+      <div class="service-card">
+        <div class="service-icon">🎨</div>
+        <h3>Diseños y Degradados</h3>
+        <p>Diseños creativos y degradados modernos en el cabello.</p>
+        <ul>
+          <li>Diseños personalizados</li>
+          <li>Degradados precisos</li>
+          <li>Acabado con navaja</li>
+        </ul>
+        <div class="service-price">$40</div>
+      </div>
+      
+      <div class="service-card">
+        <div class="service-icon">🧴</div>
+        <h3>Tratamiento Capilar</h3>
+        <p>Tratamientos especializados para el cuidado del cabello.</p>
+        <ul>
+          <li>Hidratación profunda</li>
+          <li>Nutrición capilar</li>
+          <li>Productos premium</li>
+        </ul>
+        <div class="service-price">$30</div>
+      </div>
+      
+      <div class="service-card">
+        <div class="service-icon">👨‍🦱</div>
+        <h3>Servicios Especializados</h3>
+        <p>Servicios especiales para ocasiones importantes.</p>
+        <ul>
+          <li>Corte para bodas</li>
+          <li>Arreglo para eventos</li>
+          <li>Consultoría de estilo</li>
+        </ul>
+        <div class="service-price">$50</div>
+      </div>
+    </div>
+    
+    <div class="services-cta">
+      <h3>¿Necesitas un servicio específico?</h3>
+      <p>Contáctanos para más información sobre nuestros servicios</p>
+      <a href="#citas" class="btn btn-primary">Agendar Cita</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .services {
+    padding: 4rem 0;
+    background: #f8f9fa;
+  }
+  
+  .services-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  
+  .services-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  
+  .services-header h2 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+  }
+  
+  .services-header p {
+    font-size: 1.2rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+  }
+  
+  .service-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3498db, #2ecc71);
+  }
+  
+  .service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  .service-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .service-card h3 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .service-card p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .service-card ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+  }
+  
+  .service-card li {
+    padding: 0.5rem 0;
+    color: #555;
+    position: relative;
+    padding-left: 1.5rem;
+  }
+  
+  .service-card li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #27ae60;
+    font-weight: bold;
+  }
+  
+  .service-price {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #3498db;
+    margin-top: 1rem;
+  }
+  
+  .services-cta {
+    text-align: center;
+    background: white;
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .services-cta h3 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+  }
+  
+  .services-cta p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
+  }
+  
+  .btn {
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+  
+  .btn-primary {
+    background: #3498db;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+  }
+  
+  @media (max-width: 768px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .services-header h2 {
+      font-size: 2rem;
+    }
+    
+    .service-card {
+      padding: 1.5rem;
+    }
+    
+    .services-cta {
+      padding: 2rem;
+    }
+  }
+</style> 
