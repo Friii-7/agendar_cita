@@ -10,15 +10,7 @@
       <input type="text" id="name" name="name" required>
     </div>
     
-    <div class="form-group">
-      <label for="email">Correo electrónico</label>
-      <input type="email" id="email" name="email" required>
-    </div>
-    
-    <div class="form-group">
-      <label for="phone">Teléfono</label>
-      <input type="tel" id="phone" name="phone" required>
-    </div>
+
     
     <div class="form-group">
       <label for="barber">Barbero</label>
@@ -65,10 +57,7 @@
       </select>
     </div>
     
-    <div class="form-group">
-      <label for="notes">Notas adicionales</label>
-      <textarea id="notes" name="notes" rows="4" placeholder="Especificaciones especiales, preferencias de estilo, etc."></textarea>
-    </div>
+
     
     <div class="total-section">
       <h3>Total: <span id="total">$0</span></h3>
@@ -86,12 +75,35 @@
     background: white;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    border: 2px solid #f0f0f0;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .appointment-form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/image/logo.png');
+    background-size: 200px;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.05;
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  .appointment-form h2,
+  .appointment-form form {
+    position: relative;
+    z-index: 1;
   }
   
   .appointment-form h2 {
     text-align: center;
-    color: black;
+    color: #000000;
     margin-bottom: 2rem;
     font-size: 2rem;
   }
@@ -104,7 +116,7 @@
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: black;
+    color: #000000;
   }
   
   .form-group input,
@@ -116,42 +128,43 @@
     border-radius: 8px;
     font-size: 1rem;
     transition: border-color 0.3s, box-shadow 0.3s;
-    background: white;
-    color: black;
+    background: rgba(255, 255, 255, 0.9);
   }
   
   .form-group input:focus,
   .form-group select:focus,
   .form-group textarea:focus {
     outline: none;
-    border-color: #219E3D;
-    box-shadow: 0 0 0 3px rgba(33, 158, 61, 0.1);
+    border-color: #95D600;
+    box-shadow: 0 0 0 3px rgba(149, 214, 0, 0.1);
+    background: white;
   }
   
   .total-section {
-    background: #f8f9fa;
+    background: rgba(149, 214, 0, 0.1);
     padding: 1rem;
     border-radius: 8px;
     margin-bottom: 1.5rem;
     text-align: center;
+    border: 1px solid rgba(149, 214, 0, 0.2);
   }
   
   .total-section h3 {
     margin: 0;
-    color: black;
+    color: #000000;
     font-size: 1.5rem;
   }
   
   #total {
-    color: #219E3D;
+    color: #95D600;
     font-weight: 700;
   }
   
   .submit-btn {
     width: 100%;
     padding: 1rem;
-    background: linear-gradient(135deg, #219E3D, #1a7a30);
-    color: white;
+    background: linear-gradient(135deg, #95D600, #7ab800);
+    color: #000000;
     border: none;
     border-radius: 8px;
     font-size: 1.1rem;
@@ -161,9 +174,9 @@
   }
   
   .submit-btn:hover {
-    background: linear-gradient(135deg, #1a7a30, #0f5a1f);
+    background: linear-gradient(135deg, #7ab800, #5a8a00);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(33, 158, 61, 0.3);
+    box-shadow: 0 4px 15px rgba(149, 214, 0, 0.3);
   }
   
   .submit-btn:disabled {
@@ -173,12 +186,13 @@
   }
   
   .success-message {
-    background: #d4edda;
-    color: #155724;
+    background: rgba(149, 214, 0, 0.1);
+    color: #000000;
     padding: 1rem;
     border-radius: 8px;
     margin-top: 1rem;
     text-align: center;
+    border: 1px solid rgba(149, 214, 0, 0.3);
   }
   
   .error-message {
@@ -224,13 +238,10 @@
       const formData = new FormData(e.target);
       const appointmentData = {
         name: formData.get('name'),
-        email: formData.get('email'),
-        phone: formData.get('phone'),
         barber: formData.get('barber'),
         service: formData.get('service'),
         date: formData.get('date'),
         time: formData.get('time'),
-        notes: formData.get('notes'),
         total: document.getElementById('total').textContent
       };
       
