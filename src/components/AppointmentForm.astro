@@ -210,74 +210,90 @@
   
   // Establecer fecha mínima como hoy
   const today = new Date().toISOString().split('T')[0];
-  document.getElementById('date').min = today;
+  const dateInput = document.getElementById('date') as HTMLInputElement;
+  if (dateInput) {
+    dateInput.min = today;
+  }
   
   // Calcular total cuando se selecciona un servicio
-  document.getElementById('service').addEventListener('change', function() {
-    const selectedOption = this.options[this.selectedIndex];
-    const price = selectedOption.dataset.price || 0;
-    document.getElementById('total').textContent = `$${price}`;
-  });
+  const serviceSelect = document.getElementById('service') as HTMLSelectElement;
+  if (serviceSelect) {
+    serviceSelect.addEventListener('change', function() {
+      const selectedOption = this.options[this.selectedIndex];
+      const price = selectedOption.dataset.price || '0';
+      const totalElement = document.getElementById('total');
+      if (totalElement) {
+        totalElement.textContent = `$${price}`;
+      }
+    });
+  }
   
   // Manejar envío del formulario
-  document.getElementById('appointmentForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const submitBtn = e.target.querySelector('.submit-btn');
-    const originalText = submitBtn.textContent;
-    
-    // Deshabilitar botón y mostrar loading
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Agendando...';
-    
-    // Remover mensajes anteriores
-    const existingMessages = document.querySelectorAll('.success-message, .error-message');
-    existingMessages.forEach(msg => msg.remove());
-    
-    try {
-      const formData = new FormData(e.target);
-      const appointmentData = {
-        name: formData.get('name'),
-        barber: formData.get('barber'),
-        service: formData.get('service'),
-        date: formData.get('date'),
-        time: formData.get('time'),
-        total: document.getElementById('total').textContent
-      };
+  const appointmentForm = document.getElementById('appointmentForm') as HTMLFormElement;
+  if (appointmentForm) {
+    appointmentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
       
-      // Guardar en Firebase
-      const result = await saveAppointment(appointmentData);
+      const form = e.target as HTMLFormElement;
+      const submitBtn = form.querySelector('.submit-btn') as HTMLButtonElement;
+      const originalText = submitBtn.textContent;
       
-      if (result.success) {
-        // Mostrar mensaje de éxito
-        const successMsg = document.createElement('div');
-        successMsg.className = 'success-message';
-        successMsg.innerHTML = `
-          <h3>✅ ¡Cita agendada exitosamente!</h3>
-          <p>Tu cita ha sido confirmada. Te enviaremos un correo de confirmación.</p>
-          <p><strong>ID de cita:</strong> ${result.id}</p>
-        `;
-        e.target.appendChild(successMsg);
+      // Deshabilitar botón y mostrar loading
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Agendando...';
+      
+      // Remover mensajes anteriores
+      const existingMessages = document.querySelectorAll('.success-message, .error-message');
+      existingMessages.forEach(msg => msg.remove());
+      
+      try {
+        const formData = new FormData(form);
+        const totalElement = document.getElementById('total');
+        const appointmentData = {
+          name: formData.get('name') as string,
+          barber: formData.get('barber') as string,
+          service: formData.get('service') as string,
+          date: formData.get('date') as string,
+          time: formData.get('time') as string,
+          total: totalElement ? totalElement.textContent : '$0'
+        };
         
-        // Limpiar formulario
-        e.target.reset();
-        document.getElementById('total').textContent = '$0';
+        // Guardar en Firebase
+        const result = await saveAppointment(appointmentData);
+        
+        if (result.success) {
+          // Mostrar mensaje de éxito
+          const successMsg = document.createElement('div');
+          successMsg.className = 'success-message';
+          successMsg.innerHTML = `
+            <h3>✅ ¡Cita agendada exitosamente!</h3>
+            <p>Tu cita ha sido confirmada. Te enviaremos un correo de confirmación.</p>
+            <p><strong>ID de cita:</strong> ${result.id}</p>
+          `;
+          form.appendChild(successMsg);
+          
+          // Limpiar formulario
+          form.reset();
+          if (totalElement) {
+            totalElement.textContent = '$0';
+          }
+        }
+      } catch (error) {
+        console.error('Error scheduling appointment:', error);
+        
+        // Mostrar mensaje de error
+        const errorMsg = document.createElement('div');
+        errorMsg.className = 'error-message';
+        errorMsg.innerHTML = `
+          <h3>❌ Error al agendar la cita</h3>
+          <p>Por favor intenta de nuevo. Si el problema persiste, contáctanos.</p>
+        `;
+        form.appendChild(errorMsg);
+      } finally {
+        // Restaurar botón
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
       }
-    } catch (error) {
-      console.error('Error scheduling appointment:', error);
-      
-      // Mostrar mensaje de error
-      const errorMsg = document.createElement('div');
-      errorMsg.className = 'error-message';
-      errorMsg.innerHTML = `
-        <h3>❌ Error al agendar la cita</h3>
-        <p>Por favor intenta de nuevo. Si el problema persiste, contáctanos.</p>
-      `;
-      e.target.appendChild(errorMsg);
-    } finally {
-      // Restaurar botón
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
-    }
-  });
+    });
+  }
 </script> 
