@@ -1,0 +1,631 @@
+---
+// BarberCards.astro
+---
+
+<div class="barber-cards-container">
+  <h2>👨‍💼 Panel de Barberos</h2>
+  
+  <div class="date-selector">
+    <label for="selectedDate">Fecha:</label>
+    <input type="date" id="selectedDate" />
+    <button id="todayBtn" class="today-btn">Hoy</button>
+  </div>
+  
+  <div class="barber-cards-grid">
+    <!-- Araz Card -->
+    <div class="barber-card" data-barber="araz">
+      <div class="barber-header">
+        <div class="barber-avatar">
+          <img src="/image/barbers/farzin.jpg" alt="Araz">
+        </div>
+        <div class="barber-info">
+          <h3>Araz</h3>
+          <p class="barber-status online">🟢 Disponible</p>
+        </div>
+      </div>
+      
+      <div class="appointments-summary">
+        <div class="summary-item pending">
+          <span class="count" id="araz-pending">0</span>
+          <span class="label">Pendientes</span>
+        </div>
+        <div class="summary-item completed">
+          <span class="count" id="araz-completed">0</span>
+          <span class="label">Completadas</span>
+        </div>
+        <div class="summary-item cancelled">
+          <span class="count" id="araz-cancelled">0</span>
+          <span class="label">Canceladas</span>
+        </div>
+      </div>
+      
+      <div class="appointments-list" id="araz-appointments">
+        <div class="loading-appointments">Cargando citas...</div>
+      </div>
+    </div>
+    
+    <!-- Danel Card -->
+    <div class="barber-card" data-barber="danel">
+      <div class="barber-header">
+        <div class="barber-avatar">
+          <img src="/image/barbers/danel.jpeg" alt="Danel">
+        </div>
+        <div class="barber-info">
+          <h3>Danel</h3>
+          <p class="barber-status online">🟢 Disponible</p>
+        </div>
+      </div>
+      
+      <div class="appointments-summary">
+        <div class="summary-item pending">
+          <span class="count" id="danel-pending">0</span>
+          <span class="label">Pendientes</span>
+        </div>
+        <div class="summary-item completed">
+          <span class="count" id="danel-completed">0</span>
+          <span class="label">Completadas</span>
+        </div>
+        <div class="summary-item cancelled">
+          <span class="count" id="danel-cancelled">0</span>
+          <span class="label">Canceladas</span>
+        </div>
+      </div>
+      
+      <div class="appointments-list" id="danel-appointments">
+        <div class="loading-appointments">Cargando citas...</div>
+      </div>
+    </div>
+    
+    <!-- Farzin Card -->
+    <div class="barber-card" data-barber="farzin">
+      <div class="barber-header">
+        <div class="barber-avatar">
+          <img src="/image/barbers/farzin.jpg" alt="Farzin">
+        </div>
+        <div class="barber-info">
+          <h3>Farzin</h3>
+          <p class="barber-status online">🟢 Disponible</p>
+        </div>
+      </div>
+      
+      <div class="appointments-summary">
+        <div class="summary-item pending">
+          <span class="count" id="farzin-pending">0</span>
+          <span class="label">Pendientes</span>
+        </div>
+        <div class="summary-item completed">
+          <span class="count" id="farzin-completed">0</span>
+          <span class="label">Completadas</span>
+        </div>
+        <div class="summary-item cancelled">
+          <span class="count" id="farzin-cancelled">0</span>
+          <span class="label">Canceladas</span>
+        </div>
+      </div>
+      
+      <div class="appointments-list" id="farzin-appointments">
+        <div class="loading-appointments">Cargando citas...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .barber-cards-container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .barber-cards-container h2 {
+    text-align: center;
+    color: #000000;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+  }
+  
+  .date-selector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .date-selector label {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .date-selector input {
+    padding: 0.5rem;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  
+  .today-btn {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #95D600, #7ab800);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .today-btn:hover {
+    background: linear-gradient(135deg, #7ab800, #5a8a00);
+    transform: translateY(-1px);
+  }
+  
+  .barber-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+  }
+  
+  .barber-card {
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .barber-card:hover {
+    border-color: #95D600;
+    box-shadow: 0 4px 20px rgba(149, 214, 0, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  .barber-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f8f9fa;
+  }
+  
+  .barber-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #95D600;
+  }
+  
+  .barber-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .barber-info h3 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  
+  .barber-status {
+    margin: 0.25rem 0 0 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  
+  .barber-status.online {
+    color: #28a745;
+  }
+  
+  .barber-status.offline {
+    color: #dc3545;
+  }
+  
+  .appointments-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .summary-item {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 8px;
+    background: #f8f9fa;
+  }
+  
+  .summary-item.pending {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+  }
+  
+  .summary-item.completed {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+  }
+  
+  .summary-item.cancelled {
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+  }
+  
+  .summary-item .count {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  
+  .summary-item.pending .count {
+    color: #856404;
+  }
+  
+  .summary-item.completed .count {
+    color: #155724;
+  }
+  
+  .summary-item.cancelled .count {
+    color: #721c24;
+  }
+  
+  .summary-item .label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .appointments-list {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .appointment-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+    background: #f8f9fa;
+    border-left: 4px solid #95D600;
+  }
+  
+  .appointment-item.pending {
+    border-left-color: #ffc107;
+    background: #fff3cd;
+  }
+  
+  .appointment-item.completed {
+    border-left-color: #28a745;
+    background: #d4edda;
+  }
+  
+  .appointment-item.cancelled {
+    border-left-color: #dc3545;
+    background: #f8d7da;
+  }
+  
+  .appointment-info {
+    flex: 1;
+  }
+  
+  .appointment-client {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.25rem;
+  }
+  
+  .appointment-details {
+    font-size: 0.8rem;
+    color: #666;
+  }
+  
+  .appointment-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .status-btn {
+    padding: 0.25rem 0.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .status-btn.complete {
+    background: #28a745;
+    color: white;
+  }
+  
+  .status-btn.complete:hover {
+    background: #218838;
+  }
+  
+  .status-btn.cancel {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .status-btn.cancel:hover {
+    background: #c82333;
+  }
+  
+  .status-btn.pending {
+    background: #ffc107;
+    color: #212529;
+  }
+  
+  .status-btn.pending:hover {
+    background: #e0a800;
+  }
+  
+  .no-appointments {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 2rem;
+  }
+  
+  .loading-appointments {
+    text-align: center;
+    color: #666;
+    padding: 2rem;
+  }
+  
+  @media (max-width: 768px) {
+    .barber-cards-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .date-selector {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .appointments-summary {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  import { getAppointmentsByBarberAndDate, updateAppointmentStatus } from '../lib/firebase.js';
+  
+  let currentDate = new Date().toISOString().split('T')[0];
+  
+  // Initialize the component
+  document.addEventListener('DOMContentLoaded', function() {
+    const dateInput = document.getElementById('selectedDate') as HTMLInputElement;
+    const todayBtn = document.getElementById('todayBtn') as HTMLButtonElement;
+    
+    // Set today's date as default
+    dateInput.value = currentDate;
+    
+    // Load appointments for all barbers
+    loadAllBarberAppointments(currentDate);
+    
+    // Event listeners
+    dateInput.addEventListener('change', (e) => {
+      currentDate = (e.target as HTMLInputElement).value;
+      loadAllBarberAppointments(currentDate);
+    });
+    
+    todayBtn.addEventListener('click', () => {
+      currentDate = new Date().toISOString().split('T')[0];
+      dateInput.value = currentDate;
+      loadAllBarberAppointments(currentDate);
+    });
+  });
+  
+  async function loadAllBarberAppointments(date: string) {
+    const barbers = ['araz', 'danel', 'farzin'];
+    
+    for (const barber of barbers) {
+      await loadBarberAppointments(barber, date);
+    }
+  }
+  
+  async function loadBarberAppointments(barberCode: string, date: string) {
+    try {
+      const appointments = await getAppointmentsByBarberAndDate(barberCode, date);
+      displayBarberAppointments(barberCode, appointments);
+      updateBarberSummary(barberCode, appointments);
+    } catch (error) {
+      console.error(`Error loading appointments for ${barberCode}:`, error);
+      showError(barberCode, 'Error al cargar las citas');
+    }
+  }
+  
+  function displayBarberAppointments(barberCode: string, appointments: any[]) {
+    const container = document.getElementById(`${barberCode}-appointments`);
+    if (!container) return;
+    
+    if (appointments.length === 0) {
+      container.innerHTML = '<div class="no-appointments">No hay citas para esta fecha</div>';
+      return;
+    }
+    
+    const appointmentsHTML = appointments.map(appointment => {
+      const statusClass = appointment.status || 'pending';
+      const statusText = getStatusText(appointment.status);
+      const serviceName = getServiceName(appointment.service);
+      
+      return `
+        <div class="appointment-item ${statusClass}" data-id="${appointment.id}">
+          <div class="appointment-info">
+            <div class="appointment-client">${appointment.name}</div>
+            <div class="appointment-details">
+              ${serviceName} - ${appointment.time} - $${appointment.total}
+            </div>
+          </div>
+          <div class="appointment-actions">
+            ${getStatusButtons(appointment.id, appointment.status)}
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+    container.innerHTML = appointmentsHTML;
+    
+    // Add event listeners to status buttons
+    addStatusButtonListeners(barberCode);
+  }
+  
+  function updateBarberSummary(barberCode: string, appointments: any[]) {
+    const pending = appointments.filter(a => a.status === 'pending').length;
+    const completed = appointments.filter(a => a.status === 'completed').length;
+    const cancelled = appointments.filter(a => a.status === 'cancelled').length;
+    
+    const pendingEl = document.getElementById(`${barberCode}-pending`);
+    const completedEl = document.getElementById(`${barberCode}-completed`);
+    const cancelledEl = document.getElementById(`${barberCode}-cancelled`);
+    
+    if (pendingEl) pendingEl.textContent = pending.toString();
+    if (completedEl) completedEl.textContent = completed.toString();
+    if (cancelledEl) cancelledEl.textContent = cancelled.toString();
+  }
+  
+  function getStatusText(status: string): string {
+    const statusMap: Record<string, string> = {
+      'pending': 'Pendiente',
+      'completed': 'Completada',
+      'cancelled': 'Cancelada'
+    };
+    return statusMap[status] || 'Pendiente';
+  }
+  
+  function getServiceName(serviceCode: string): string {
+    const services: Record<string, string> = {
+      'corte': 'Corte Clásico',
+      'barba': 'Arreglo de Barba',
+      'combo': 'Corte + Barba',
+      'disenos': 'Diseños y Degradados',
+      'tratamiento': 'Tratamiento Capilar',
+      'especializado': 'Servicios Especializados'
+    };
+    return services[serviceCode] || serviceCode;
+  }
+  
+  function getStatusButtons(appointmentId: string, currentStatus: string): string {
+    if (currentStatus === 'completed') {
+      return '<span class="status-btn complete">✓ Completada</span>';
+    } else if (currentStatus === 'cancelled') {
+      return '<span class="status-btn cancel">✗ Cancelada</span>';
+    } else {
+      return `
+        <button class="status-btn complete" onclick="updateStatus('${appointmentId}', 'completed')">✓ Completar</button>
+        <button class="status-btn cancel" onclick="updateStatus('${appointmentId}', 'cancelled')">✗ Cancelar</button>
+      `;
+    }
+  }
+  
+  function addStatusButtonListeners(barberCode: string) {
+    const container = document.getElementById(`${barberCode}-appointments`);
+    if (!container) return;
+    
+    const completeButtons = container.querySelectorAll('.status-btn.complete');
+    const cancelButtons = container.querySelectorAll('.status-btn.cancel');
+    
+    completeButtons.forEach(btn => {
+      if (btn instanceof HTMLButtonElement) {
+        btn.addEventListener('click', async (e) => {
+          e.preventDefault();
+          const appointmentId = (btn.closest('.appointment-item') as HTMLElement)?.dataset.id;
+          if (appointmentId) {
+            await updateStatus(appointmentId, 'completed');
+          }
+        });
+      }
+    });
+    
+    cancelButtons.forEach(btn => {
+      if (btn instanceof HTMLButtonElement) {
+        btn.addEventListener('click', async (e) => {
+          e.preventDefault();
+          const appointmentId = (btn.closest('.appointment-item') as HTMLElement)?.dataset.id;
+          if (appointmentId) {
+            await updateStatus(appointmentId, 'cancelled');
+          }
+        });
+      }
+    });
+  }
+  
+  async function updateStatus(appointmentId: string, status: string) {
+    try {
+      await updateAppointmentStatus(appointmentId, status);
+      
+      // Reload appointments for all barbers
+      await loadAllBarberAppointments(currentDate);
+      
+      // Show success message
+      showNotification(`Estado actualizado a: ${getStatusText(status)}`, 'success');
+    } catch (error) {
+      console.error('Error updating appointment status:', error);
+      showNotification('Error al actualizar el estado', 'error');
+    }
+  }
+  
+  function showError(barberCode: string, message: string) {
+    const container = document.getElementById(`${barberCode}-appointments`);
+    if (container) {
+      container.innerHTML = `<div class="no-appointments" style="color: #dc3545;">${message}</div>`;
+    }
+  }
+  
+  function showNotification(message: string, type: 'success' | 'error') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      z-index: 1000;
+      animation: slideIn 0.3s ease;
+      ${type === 'success' ? 'background: #28a745;' : 'background: #dc3545;'}
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      notification.remove();
+    }, 3000);
+  }
+  
+  // Add CSS animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+</script>

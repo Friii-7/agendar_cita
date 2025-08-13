@@ -1,6 +1,6 @@
 // Firebase configuration
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc, getDocs, query, where, orderBy } from 'firebase/firestore';
+import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, updateDoc, doc } from 'firebase/firestore';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 
 const firebaseConfig = {
@@ -102,6 +102,62 @@ export function onMessageListener() {
       resolve(payload);
     });
   });
+}
+
+// Function to get appointments by barber
+export async function getAppointmentsByBarber(barberCode) {
+  try {
+    const q = query(
+      collection(db, 'appointments'),
+      where('barber', '==', barberCode),
+      orderBy('date', 'desc')
+    );
+    const querySnapshot = await getDocs(q);
+    const appointments = [];
+    querySnapshot.forEach((doc) => {
+      appointments.push({ id: doc.id, ...doc.data() });
+    });
+    return appointments;
+  } catch (error) {
+    console.error('Error getting appointments by barber:', error);
+    throw error;
+  }
+}
+
+// Function to get appointments by barber and date
+export async function getAppointmentsByBarberAndDate(barberCode, date) {
+  try {
+    const q = query(
+      collection(db, 'appointments'),
+      where('barber', '==', barberCode),
+      where('date', '==', date),
+      orderBy('time', 'asc')
+    );
+    const querySnapshot = await getDocs(q);
+    const appointments = [];
+    querySnapshot.forEach((doc) => {
+      appointments.push({ id: doc.id, ...doc.data() });
+    });
+    return appointments;
+  } catch (error) {
+    console.error('Error getting appointments by barber and date:', error);
+    throw error;
+  }
+}
+
+// Function to update appointment status
+export async function updateAppointmentStatus(appointmentId, status) {
+  try {
+    const appointmentRef = doc(db, 'appointments', appointmentId);
+    await updateDoc(appointmentRef, {
+      status: status,
+      updatedAt: new Date()
+    });
+    return { success: true };
+  } catch (error) {
+    console.error('Error updating appointment status:', error);
+    throw error;
+  }
 }
 
 export { db, messaging }; 
