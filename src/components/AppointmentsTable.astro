@@ -1,0 +1,461 @@
+---
+// AppointmentsTable.astro
+---
+
+<div class="appointments-table-container">
+  <h2>📋 Citas Agendadas</h2>
+  <div class="table-controls">
+    <button id="refreshBtn" class="refresh-btn">🔄 Actualizar</button>
+    <div class="date-filter">
+      <label for="dateFilter">Filtrar por fecha:</label>
+      <input type="date" id="dateFilter" />
+      <button id="clearFilter" class="clear-filter-btn">Limpiar filtro</button>
+    </div>
+  </div>
+  
+  <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+    <div class="spinner"></div>
+    <p>Cargando citas...</p>
+  </div>
+  
+  <div class="table-wrapper">
+    <table class="appointments-table" id="appointmentsTable">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Barbero</th>
+          <th>Servicio</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Total</th>
+          <th>Estado</th>
+          <th>ID Cita</th>
+        </tr>
+      </thead>
+      <tbody id="appointmentsTableBody">
+        <tr>
+          <td colspan="8" class="no-data">No hay citas para mostrar</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="stats">
+    <div class="stat-item">
+      <span class="stat-number" id="totalAppointments">0</span>
+      <span class="stat-label">Total de Citas</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number" id="todayAppointments">0</span>
+      <span class="stat-label">Citas Hoy</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number" id="pendingAppointments">0</span>
+      <span class="stat-label">Pendientes</span>
+    </div>
+  </div>
+  
+
+</div>
+
+<style>
+  .appointments-table-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .appointments-table-container h2 {
+    text-align: center;
+    color: #000000;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+  }
+  
+  .table-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .refresh-btn {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #95D600, #7ab800);
+    color: #000000;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .refresh-btn:hover {
+    background: linear-gradient(135deg, #7ab800, #5a8a00);
+    transform: translateY(-2px);
+  }
+  
+  .date-filter {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .date-filter label {
+    font-weight: 600;
+    color: #000000;
+  }
+  
+  .date-filter input {
+    padding: 0.5rem;
+    border: 2px solid #e1e8ed;
+    border-radius: 6px;
+    font-size: 0.9rem;
+  }
+  
+  .clear-filter-btn {
+    padding: 0.5rem 1rem;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  .clear-filter-btn:hover {
+    background: #5a6268;
+  }
+  
+  .loading-spinner {
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #95D600;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .table-wrapper {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #e1e8ed;
+  }
+  
+  .appointments-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+  }
+  
+  .appointments-table th {
+    background: linear-gradient(135deg, #95D600, #7ab800);
+    color: #000000;
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #e1e8ed;
+  }
+  
+  .appointments-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e1e8ed;
+    vertical-align: middle;
+  }
+  
+  .appointments-table tbody tr:hover {
+    background: rgba(149, 214, 0, 0.05);
+  }
+  
+  .appointments-table tbody tr:nth-child(even) {
+    background: rgba(0, 0, 0, 0.02);
+  }
+  
+  .appointments-table tbody tr:nth-child(even):hover {
+    background: rgba(149, 214, 0, 0.05);
+  }
+  
+  .no-data {
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+  }
+  
+  .status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .status-pending {
+    background: #fff3cd;
+    color: #856404;
+  }
+  
+  .status-confirmed {
+    background: #d1edff;
+    color: #0c5460;
+  }
+  
+  .status-completed {
+    background: #d4edda;
+    color: #155724;
+  }
+  
+  .status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+  }
+  
+  .stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(149, 214, 0, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(149, 214, 0, 0.2);
+  }
+  
+  .stat-item {
+    text-align: center;
+  }
+  
+  .stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #95D600;
+  }
+  
+  .stat-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-weight: 500;
+  }
+  
+
+  
+  @media (max-width: 768px) {
+    .table-controls {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .date-filter {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .stats {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .appointments-table th,
+    .appointments-table td {
+      padding: 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+
+  }
+  
+  @media (max-width: 480px) {
+    .appointments-table-container {
+      padding: 1rem;
+      margin: 1rem;
+    }
+    
+
+    
+    .schedule-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  import { getAppointments, getAppointmentsByDate } from '../lib/firebase.js';
+  
+  interface Appointment {
+    id: string;
+    name: string;
+    barber: string;
+    service: string;
+    date: string;
+    time: string;
+    total: string;
+    status?: string;
+    createdAt?: Date;
+  }
+  
+  let allAppointments: Appointment[] = [];
+  
+  // Load appointments on page load
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadAppointments();
+    setupEventListeners();
+  });
+  
+  async function loadAppointments() {
+    const loadingSpinner = document.getElementById('loadingSpinner') as HTMLElement;
+    const tableBody = document.getElementById('appointmentsTableBody') as HTMLElement;
+    
+    try {
+      loadingSpinner.style.display = 'block';
+      tableBody.innerHTML = '<tr><td colspan="8" class="no-data">Cargando...</td></tr>';
+      
+      allAppointments = await getAppointments();
+      displayAppointments(allAppointments);
+      updateStats(allAppointments);
+    } catch (error) {
+      console.error('Error loading appointments:', error);
+      tableBody.innerHTML = '<tr><td colspan="8" class="no-data">Error al cargar las citas</td></tr>';
+    } finally {
+      loadingSpinner.style.display = 'none';
+    }
+  }
+  
+  function displayAppointments(appointments: Appointment[]) {
+    const tableBody = document.getElementById('appointmentsTableBody') as HTMLElement;
+    
+    if (appointments.length === 0) {
+      tableBody.innerHTML = '<tr><td colspan="8" class="no-data">No hay citas para mostrar</td></tr>';
+      return;
+    }
+    
+    tableBody.innerHTML = appointments.map(appointment => `
+      <tr>
+        <td><strong>${appointment.name}</strong></td>
+        <td>${getBarberName(appointment.barber)}</td>
+        <td>${getServiceName(appointment.service)}</td>
+        <td>${formatDate(appointment.date)}</td>
+        <td>${formatTime(appointment.time)}</td>
+        <td><strong>${appointment.total}</strong></td>
+        <td><span class="status-badge status-${appointment.status || 'pending'}">${getStatusText(appointment.status)}</span></td>
+        <td><code>${appointment.id}</code></td>
+      </tr>
+    `).join('');
+  }
+  
+
+  
+  function updateStats(appointments: Appointment[]) {
+    
+    const today = new Date().toISOString().split('T')[0];
+    const todayAppointments = appointments.filter(apt => apt.date === today);
+    const pendingAppointments = appointments.filter(apt => apt.status === 'pending');
+    
+    const totalElement = document.getElementById('totalAppointments') as HTMLElement;
+    const todayElement = document.getElementById('todayAppointments') as HTMLElement;
+    const pendingElement = document.getElementById('pendingAppointments') as HTMLElement;
+    
+    if (totalElement) totalElement.textContent = appointments.length.toString();
+    if (todayElement) todayElement.textContent = todayAppointments.length.toString();
+    if (pendingElement) pendingElement.textContent = pendingAppointments.length.toString();
+    
+
+  }
+  
+  function setupEventListeners() {
+    // Refresh button
+    const refreshBtn = document.getElementById('refreshBtn') as HTMLButtonElement;
+    refreshBtn.addEventListener('click', loadAppointments);
+    
+    // Date filter
+    const dateFilter = document.getElementById('dateFilter') as HTMLInputElement;
+    dateFilter.addEventListener('change', async (e) => {
+      const selectedDate = (e.target as HTMLInputElement).value;
+      if (selectedDate) {
+        try {
+          const filteredAppointments = await getAppointmentsByDate(selectedDate);
+          displayAppointments(filteredAppointments);
+          updateStats(filteredAppointments);
+        } catch (error) {
+          console.error('Error filtering appointments:', error);
+        }
+      } else {
+        displayAppointments(allAppointments);
+        updateStats(allAppointments);
+      }
+    });
+    
+    // Clear filter button
+    const clearFilterBtn = document.getElementById('clearFilter') as HTMLButtonElement;
+    clearFilterBtn.addEventListener('click', () => {
+      dateFilter.value = '';
+      displayAppointments(allAppointments);
+      updateStats(allAppointments);
+    });
+  }
+  
+  function getBarberName(barberCode: string): string {
+    const barbers: Record<string, string> = {
+      'araz': 'Araz',
+      'danel': 'Danel',
+      'farzin': 'Farzin'
+    };
+    return barbers[barberCode] || barberCode;
+  }
+  
+  function getServiceName(serviceCode: string): string {
+    const services: Record<string, string> = {
+      'corte': 'Corte Clásico',
+      'barba': 'Arreglo de Barba',
+      'combo': 'Corte + Barba',
+      'disenos': 'Diseños y Degradados',
+      'tratamiento': 'Tratamiento Capilar',
+      'especializado': 'Servicios Especializados'
+    };
+    return services[serviceCode] || serviceCode;
+  }
+  
+  function formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-ES', {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  }
+  
+  function formatTime(timeString: string): string {
+    const [hours, minutes] = timeString.split(':');
+    const hour = parseInt(hours);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour % 12 || 12;
+    return `${displayHour}:${minutes} ${ampm}`;
+  }
+  
+  function getStatusText(status?: string): string {
+    const statuses: Record<string, string> = {
+      'pending': 'Pendiente',
+      'confirmed': 'Confirmada',
+      'completed': 'Completada',
+      'cancelled': 'Cancelada'
+    };
+    return statuses[status || 'pending'] || 'Pendiente';
+  }
+</script>
